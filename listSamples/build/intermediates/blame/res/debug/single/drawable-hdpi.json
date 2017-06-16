@@ -8,12 +8,12 @@
         "source": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\src\\main\\res\\drawable-hdpi\\custom_tab_indicator_focused.9.png"
     },
     {
-        "merged": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\perm_group_calendar_selected.png",
-        "source": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\src\\main\\res\\drawable-hdpi\\perm_group_calendar_selected.png"
-    },
-    {
         "merged": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\custom_tab_indicator_selected_pressed.9.png",
         "source": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\src\\main\\res\\drawable-hdpi\\custom_tab_indicator_selected_pressed.9.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\perm_group_calendar_selected.png",
+        "source": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\src\\main\\res\\drawable-hdpi\\perm_group_calendar_selected.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\Groupon\\listSamples\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\perm_group_location_normal.png",
