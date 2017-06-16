@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="180dp" >
 
@@ -20,22 +21,25 @@
             android:id="@+id/iv_header_list_icons_indicator1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/banner_dot_pressed" />
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/banner_dot_pressed"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_header_list_icons_indicator2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/banner_dot" />
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/banner_dot"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_header_list_icons_indicator3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/banner_dot" />
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/banner_dot"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </RelativeLayout>
