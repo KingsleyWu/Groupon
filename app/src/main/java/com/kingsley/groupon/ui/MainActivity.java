@@ -1,6 +1,7 @@
 package com.kingsley.groupon.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -8,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.kingsley.groupon.R;
+import com.kingsley.groupon.adapter.MyListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PullToRefreshListView mMainPrListView;
     private ListView mMainListView;
     private List<String> datas;
-    private ArrayAdapter<String> adapter;
+    private MyListViewAdapter adapter;
     private TextView mMainMenuTvComment;
     private TextView mMainMenuTvStore;
     private TextView mMainMenuTvScan;
@@ -60,6 +61,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         setListeners();
         setAdapter();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        datas.add("$ 3");
+        datas.add("$ 5");
+        datas.add("$ 36");
+        datas.add("$ 37");
+        datas.add("$ 394");
+        datas.add("$ 33");
+        datas.add("$ 33");
     }
 
     //初始化View
@@ -88,18 +101,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAdapter() {
         datas = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this,R.layout.main_item_layout,datas);
+        adapter = new MyListViewAdapter(this, datas);
         addHeaderView();
         mMainListView.setAdapter(adapter);
     }
 
     private void addHeaderView() {
         inflater = LayoutInflater.from(this);
-        mIconsView = inflater.inflate(R.layout.header_list_icons,mMainListView,false);
-        mSquareView = inflater.inflate(R.layout.header_list_square,mMainListView,false);
-        mAdsView = inflater.inflate(R.layout.header_list_ads,mMainListView,false);
-        mCategoriesView = inflater.inflate(R.layout.header_list_categories,mMainListView,false);
-        mRecommendView = inflater.inflate(R.layout.header_list_recommend,mMainListView,false);
+        mIconsView = inflater.inflate(R.layout.header_list_icons, mMainListView, false);
+        mSquareView = inflater.inflate(R.layout.header_list_square, mMainListView, false);
+        mAdsView = inflater.inflate(R.layout.header_list_ads, mMainListView, false);
+        mCategoriesView = inflater.inflate(R.layout.header_list_categories, mMainListView, false);
+        mRecommendView = inflater.inflate(R.layout.header_list_recommend, mMainListView, false);
         initIconsView();
         mMainListView.addHeaderView(mIconsView);
         mMainListView.addHeaderView(mSquareView);
@@ -108,15 +121,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMainListView.addHeaderView(mRecommendView);
     }
 
-
     private void initIconsView() {
-        ViewPager viewpager = (ViewPager) mIconsView.findViewById(R.id.vp_header_list_icons);
+        final ViewPager viewpager = (ViewPager) mIconsView.findViewById(R.id.vp_header_list_icons);
+        final ImageView mIvIconsIndicator1 = (ImageView) mIconsView.findViewById(R.id.iv_icons_indicator1);
+        final ImageView mIvIconsIndicator2 = (ImageView) mIconsView.findViewById(R.id.iv_icons_indicator2);
+        final ImageView mIvIconsIndicator3 = (ImageView) mIconsView.findViewById(R.id.iv_icons_indicator3);
         PagerAdapter pagerAdapter = new PagerAdapter() {
             int[] resIDs = new int[]{
                     R.layout.icons_list_1,
                     R.layout.icons_list_2,
                     R.layout.icons_list_3
             };
+
             @Override
             public int getCount() {
                 return 60000;
@@ -129,8 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                int layoutId = resIDs[position%resIDs.length];
-                View view =inflater.inflate(layoutId,container,false);
+                int layoutId = resIDs[position % resIDs.length];
+                View view = inflater.inflate(layoutId, viewpager, false);
                 container.addView(view);
                 return view;
             }
@@ -142,7 +158,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         viewpager.setAdapter(pagerAdapter);
         viewpager.setCurrentItem(30000);
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mIvIconsIndicator1.setImageResource(R.drawable.banner_dot);
+                mIvIconsIndicator2.setImageResource(R.drawable.banner_dot);
+                mIvIconsIndicator3.setImageResource(R.drawable.banner_dot);
+                switch (position % 3) {
+                    case 0:
+                        mIvIconsIndicator1.setImageResource(R.drawable.banner_dot_pressed);
+                        break;
+                    case 1:
+                        mIvIconsIndicator2.setImageResource(R.drawable.banner_dot_pressed);
+                        break;
+                    case 2:
+                        mIvIconsIndicator3.setImageResource(R.drawable.banner_dot_pressed);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
     //设置监听
     private void setListeners() {
         mMainTvAddress.setOnClickListener(this);
@@ -152,14 +199,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMainPrListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                mMainPrListView.onRefreshComplete();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        datas.add("$ 33");
+                        adapter.notifyDataSetChanged();
+                        mMainPrListView.onRefreshComplete();
+                    }
+                },1500);
             }
         });
-
+        mMainListView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollX == 1){
+                    mMainIvAdd.setVisibility(View.GONE);
+                }else {
+                    mMainIvAdd.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         mRgMainFooter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.rb_main_footer_home:
                         break;
                     case R.id.rb_main_footer_group:
@@ -175,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.main_tv_address:
                 break;
             case R.id.main_ll_search:
