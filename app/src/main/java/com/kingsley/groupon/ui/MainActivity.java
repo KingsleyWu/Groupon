@@ -1,5 +1,6 @@
 package com.kingsley.groupon.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private static final String TAG = "MainActivity";
     private TextView mMainTvAddress;
     private LinearLayout mMainLlSearch;
     private ImageView mMainIvAdd;
@@ -209,13 +211,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 },1500);
             }
         });
-        mMainListView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        mMainPrListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollX == 1){
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                //Log.i(TAG, "onScroll: 第一个参数: "+view+"第二个参数: "+firstVisibleItem+"第三个参数: "+visibleItemCount+"第四个参数: "+totalItemCount);
+                //当显示的第一个itemView被往外(上)移动时改变上面两个mMainIvAdd与mMainTvAddress的可见性
+                if (firstVisibleItem == 1){
                     mMainIvAdd.setVisibility(View.GONE);
+                    mMainTvAddress.setVisibility(View.GONE);
                 }else {
                     mMainIvAdd.setVisibility(View.VISIBLE);
+                    mMainTvAddress.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -240,10 +251,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_tv_address:
+                Intent intent = new Intent(this,CityActivity.class);
+                startActivity(intent);
                 break;
             case R.id.main_ll_search:
                 break;
             case R.id.main_iv_add:
+                if (mMainMenuLayout.getVisibility() == View.VISIBLE)
+                mMainMenuLayout.setVisibility(View.INVISIBLE);
+                else mMainMenuLayout.setVisibility(View.VISIBLE);
                 break;
         }
     }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    tools:context="com.kingsley.groupon.ui.CityActivity">
+
+    <RelativeLayout
+        android:id="@+id/city_ll_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/city_iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/city_toolbar_back"/>
+        <RadioGroup
+            android:id="@+id/city_rg"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/city_rg_border"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/city_rb_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="6dp"
+                android:layout_margin="1dp"
+                android:checked="true"
+                android:background="@drawable/city_rb_all_item_selector"
+                android:button="@null"
+                android:text="全部"/>
+            <RadioButton
+                android:id="@+id/city_rb_overseas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="6dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/city_rb_overseas_item_selector"
+                android:button="@null"
+                android:text="海外"/>
+        </RadioGroup>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/city_tv_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+</LinearLayout>
