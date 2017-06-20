@@ -2,7 +2,6 @@ package com.kingsley.groupon.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,14 +17,21 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.kingsley.groupon.R;
 import com.kingsley.groupon.adapter.MyListViewAdapter;
+import com.kingsley.groupon.entity.TuanBean;
+import com.kingsley.groupon.util.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
@@ -37,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private View mMainMenuLayout;
     private PullToRefreshListView mMainPrListView;
     private ListView mMainListView;
-    private List<String> datas;
+    private List<TuanBean.Deal> datas;
     private MyListViewAdapter adapter;
     private TextView mMainMenuTvComment;
     private TextView mMainMenuTvStore;
@@ -68,13 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        datas.add("$ 3");
-        datas.add("$ 5");
-        datas.add("$ 36");
-        datas.add("$ 37");
-        datas.add("$ 394");
-        datas.add("$ 33");
-        datas.add("$ 33");
+        refresh();
     }
 
     //初始化View
@@ -201,16 +201,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMainPrListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        datas.add("$ 33");
-                        adapter.notifyDataSetChanged();
-                        mMainPrListView.onRefreshComplete();
-                    }
-                },1500);
+                refresh();
             }
         });
+
         mMainPrListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -221,12 +215,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 //Log.i(TAG, "onScroll: 第一个参数: "+view+"第二个参数: "+firstVisibleItem+"第三个参数: "+visibleItemCount+"第四个参数: "+totalItemCount);
                 //当显示的第一个itemView被往外(上)移动时改变上面两个mMainIvAdd与mMainTvAddress的可见性
-                if (firstVisibleItem == 1){
-                    mMainIvAdd.setVisibility(View.GONE);
-                    mMainTvAddress.setVisibility(View.GONE);
-                }else {
+                if (firstVisibleItem == 0){
                     mMainIvAdd.setVisibility(View.VISIBLE);
                     mMainTvAddress.setVisibility(View.VISIBLE);
+                }else {
+                    mMainIvAdd.setVisibility(View.GONE);
+                    mMainTvAddress.setVisibility(View.GONE);
                 }
             }
         });
@@ -262,5 +256,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else mMainMenuLayout.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+
+    public void refresh(){
+        /*HttpUtil.getDailyDeals(mMainTvAddress.getText().toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                if (s != null){
+                    Gson gson = new Gson();
+                    TuanBean tuanBean = gson.fromJson(s,TuanBean.class);
+                    List<TuanBean.Deal> deals = tuanBean.getDeals();
+                    adapter.addAll(deals,true);
+                }else {
+                    Toast.makeText(MainActivity.this, "无数据", Toast.LENGTH_SHORT).show();
+                }
+                mMainPrListView.onRefreshComplete();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(MainActivity.this, volleyError.toString(), Toast.LENGTH_SHORT).show();
+                mMainPrListView.onRefreshComplete();
+            }
+        });*/
+        HttpUtil.getDailyDeals(mMainTvAddress.getText().toString(), new Callback<TuanBean>() {
+            @Override
+            public void onResponse(Call<TuanBean> call, Response<TuanBean> response) {
+
+                TuanBean tuanBean = response.body();
+                if (tuanBean != null) {
+                    List<TuanBean.Deal> deals = tuanBean.getDeals();
+                    adapter.addAll(deals,true);
+                }else {
+                    Toast.makeText(MainActivity.this, "无数据", Toast.LENGTH_SHORT).show();
+                }
+                mMainPrListView.onRefreshComplete();
+            }
+
+            @Override
+            public void onFailure(Call<TuanBean> call, Throwable throwable) {
+                Toast.makeText(MainActivity.this, throwable.toString(), Toast.LENGTH_SHORT).show();
+                mMainPrListView.onRefreshComplete();
+            }
+        });
     }
 }

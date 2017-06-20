@@ -11,4 +11,7 @@ package com.kingsley.groupon.config;
 public interface Constant {
     String FIRST = "first";
     String SP = "grouponsp";
+    String BASEURL = "http://api.dianping.com/v1/";
+    String APPKEY = "49814079";
+    String APPSECRET = "90e3438a41d646848033b6b9d461ed54";
 }

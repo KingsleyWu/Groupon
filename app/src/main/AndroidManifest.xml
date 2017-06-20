@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kingsley.groupon">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +19,7 @@
         </activity>
         <activity android:name=".ui.GuideActivity" />
         <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.CityActivity"></activity>
+        <activity android:name=".ui.CityActivity"/>
     </application>
 
 </manifest>

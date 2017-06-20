@@ -1,16 +1,17 @@
 package com.kingsley.groupon.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kingsley.groupon.R;
+import com.kingsley.groupon.entity.TuanBean;
+import com.kingsley.groupon.util.HttpUtil;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * class name : Groupon
@@ -20,27 +21,10 @@ import java.util.List;
  * version: 1.0
  */
 
-public class MyListViewAdapter extends BaseAdapter {
-    private List<String> mDatas;
-    private Context mContext;
-    public MyListViewAdapter (Context context, List<String> datas){
-        mContext = context;
-        mDatas = datas;
-    }
+public class MyListViewAdapter extends MyBaseAdapter<TuanBean.Deal> {
 
-    @Override
-    public int getCount() {
-        return mDatas.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mDatas.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public MyListViewAdapter(Context context, List<TuanBean.Deal> list) {
+        super(context, list);
     }
 
     @Override
@@ -48,10 +32,11 @@ public class MyListViewAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.main_item_layout, parent, false);
+            convertView = inflater.inflate(R.layout.main_item_layout, parent, false);
             viewHolder.mItemIvImage = (ImageView) convertView.findViewById(R.id.item_iv_image);
             viewHolder.mItemIvMainyuyue = (ImageView) convertView.findViewById(R.id.item_iv_mainyuyue);
             viewHolder.mItemTvDian = (TextView) convertView.findViewById(R.id.item_tv_dian);
+            viewHolder.mItemTvJuLi = (TextView) convertView.findViewById(R.id.item_tv_juli);
             viewHolder.mItemTvDianmiaoshu = (TextView) convertView.findViewById(R.id.item_tv_dianmiaoshu);
             viewHolder.mItemTvJiage = (TextView) convertView.findViewById(R.id.item_tv_jiage);
             viewHolder.mItemIvYishou = (TextView) convertView.findViewById(R.id.item_iv_yishou);
@@ -59,7 +44,22 @@ public class MyListViewAdapter extends BaseAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.mItemTvJiage.setText(mDatas.get(position));
+        TuanBean.Deal deal = mList.get(position);
+        HttpUtil.loadImage(deal.getS_image_url(),viewHolder.mItemIvImage);
+        viewHolder.mItemTvDian.setText(deal.getTitle());
+        viewHolder.mItemTvDianmiaoshu.setText(deal.getDescription());
+        int juLi = new Random().nextInt(1500)+500;
+        String juLi1;
+        if (juLi >= 1000){
+            double d =Math.round(juLi/1000.0*100);
+            juLi1 = String.valueOf(d/100)+"km";
+
+        }else {
+            juLi1 = String.valueOf(juLi)+"m";
+        }
+        viewHolder.mItemTvJuLi.setText(juLi1);
+        viewHolder.mItemTvJiage.setText("¥ "+deal.getCurrent_price());
+        viewHolder.mItemIvYishou.setText("已售 "+(new Random().nextInt(1000)+50));
         return convertView;
     }
 
@@ -67,6 +67,7 @@ public class MyListViewAdapter extends BaseAdapter {
         private ImageView mItemIvImage;
         private ImageView mItemIvMainyuyue;
         private TextView mItemTvDian;
+        private TextView mItemTvJuLi;
         private TextView mItemTvDianmiaoshu;
         private TextView mItemTvJiage;
         private TextView mItemIvYishou;

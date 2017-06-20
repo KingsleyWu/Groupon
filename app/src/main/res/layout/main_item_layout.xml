@@ -23,14 +23,26 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/item_tv_dian"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:textStyle="bold"
-            android:text="归来吧多主题餐厅"/>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/item_tv_dian"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:text="归来吧多主题餐厅"/>
+            <TextView
+                android:id="@+id/item_tv_juli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="20km"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/item_tv_dianmiaoshu"
             android:layout_width="wrap_content"
@@ -47,12 +59,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="$ 1"/>
+                android:maxLines="1"
+                android:text="¥ 1"/>
             <TextView
                 android:id="@+id/item_iv_yishou"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:text="已售115"/>
         </LinearLayout>
     </LinearLayout>
