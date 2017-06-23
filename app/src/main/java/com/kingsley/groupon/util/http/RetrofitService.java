@@ -1,5 +1,6 @@
-package com.kingsley.groupon.util;
+package com.kingsley.groupon.util.http;
 
+import com.kingsley.groupon.entity.CityBean;
 import com.kingsley.groupon.entity.TuanBean;
 
 import java.util.Map;
@@ -36,4 +37,7 @@ interface RetrofitService {
      */
     @GET("deal/get_batch_deals_by_id")
     Call<TuanBean> getDailyDeals(@QueryMap Map<String,String> params);
+
+    @GET("metadata/get_cities_with_businesses")
+    Call<CityBean> getCitys();
 }

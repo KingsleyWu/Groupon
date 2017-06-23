@@ -2,6 +2,10 @@ package com.kingsley.groupon.application;
 
 import android.app.Application;
 
+import com.kingsley.groupon.entity.CityBean;
+
+import java.util.List;
+
 /**
  * class name : Groupon
  * author : Kingsley
@@ -12,7 +16,7 @@ import android.app.Application;
 
 public class MyApplication extends Application {
     public static MyApplication myApplication;
-
+    public static List<CityBean.CityNameBean> cityNameBeanList;
     @Override
     public void onCreate() {
         super.onCreate();

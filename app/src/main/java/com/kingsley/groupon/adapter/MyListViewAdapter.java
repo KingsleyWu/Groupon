@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.kingsley.groupon.R;
 import com.kingsley.groupon.entity.TuanBean;
-import com.kingsley.groupon.util.HttpUtil;
+import com.kingsley.groupon.util.http.HttpUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -71,6 +71,5 @@ public class MyListViewAdapter extends MyBaseAdapter<TuanBean.Deal> {
         private TextView mItemTvDianmiaoshu;
         private TextView mItemTvJiage;
         private TextView mItemIvYishou;
-
     }
 }

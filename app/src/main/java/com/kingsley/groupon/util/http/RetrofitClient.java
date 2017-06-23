@@ -1,9 +1,12 @@
-package com.kingsley.groupon.util;
+package com.kingsley.groupon.util.http;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.kingsley.groupon.config.Constant;
+import com.kingsley.groupon.entity.CityBean;
 import com.kingsley.groupon.entity.TuanBean;
+import com.kingsley.groupon.util.TimeUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,13 +45,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  * 2.需创建一个接口来实现方法的调用
  */
 
-public class RetrofitClient {
-    private Retrofit retrofit;
-    private OkHttpClient okHttpClient;
+class RetrofitClient {
+    private static final String TAG = "RetrofitClient";
     private RetrofitService retrofitService;
     private static RetrofitClient INSTANCE;
+    private OkHttpClient okHttpClient;
+    private Retrofit retrofit;
 
-    public static RetrofitClient getInstance() {
+    static RetrofitClient getInstance() {
         if (INSTANCE == null) {
             synchronized (RetrofitClient.class) {
                 if (INSTANCE == null) {
@@ -76,13 +80,14 @@ public class RetrofitClient {
         params.put("date",date);
         //2.通过retrofitService的getDailyIds回调返回Call<String> 的参数获取idList
         Call<String> idsCall = retrofitService.getDailyIds(params);
-        Log.i("TAG", "idsCall="+idsCall);
+        //Log.i("TAG", "idsCall="+idsCall);
         idsCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body());
                     JSONArray id_list = jsonObject.getJSONArray("id_list");
+                    //Log.i(TAG, "onResponse: id_list="+id_list);
                     int size = id_list.length();
                     if (size > 40){
                         size = 40;
@@ -91,6 +96,7 @@ public class RetrofitClient {
                     for (int i = 0; i < size; i++) {
                         sb.append(id_list.get(i)).append(",");
                     }
+                    //Log.i(TAG, "onResponse: sb="+sb.toString());
                     if (sb.length() > 0){
                         String idList = sb.substring(0, sb.length() - 1);
                         //3.通过retrofitService的getDailyDeals回调返回Call<tuanBean> 的参数获取团购信息
@@ -107,12 +113,17 @@ public class RetrofitClient {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable throwable) {
+                Log.i(TAG, "onFailure: call="+call);
+                Log.i(TAG, "onFailure: throwable="+throwable);
             }
         });
 
     }
 
+    void getCitys(Callback<CityBean> callBack){
+        Call<CityBean> cityBeanCall = retrofitService.getCitys();
+        cityBeanCall.enqueue(callBack);
+    }
 
 }

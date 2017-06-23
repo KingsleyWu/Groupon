@@ -1,6 +1,4 @@
-package com.kingsley.groupon.util;
-
-import android.util.Log;
+package com.kingsley.groupon.util.http;
 
 import com.kingsley.groupon.config.Constant;
 
@@ -39,13 +37,19 @@ public class MyInterceptor implements Interceptor {
         //获取签名sign
         String sign = HttpUtil.getSign(Constant.APPKEY,Constant.APPSECRET,params);
         //拼接appkey及签名到url上
-        Log.i("TAG", "原有请求路径"+url.toString());
+        //Log.i("TAG", "原有请求路径"+url.toString());
         ////追加appkey及sign
-        String sb = url.toString() + "&" + "appkey=" + Constant.APPKEY +
-                "&" + "sign=" + sign;
-        Log.i("TAG", "追加appkey及sign请求路径"+sb);
+        String newUrl;
+        if (set.size() == 0){
+            //Log.i("TAG", "intercept: url="+url.toString());
+            newUrl = url.toString() + "?" ;
+        }else {
+            newUrl = url.toString() + "&";
+        }
+            newUrl += "appkey=" + Constant.APPKEY + "&" + "sign=" + sign;
+        //Log.i("TAG", "追加appkey及sign请求路径"+newUrl);
         //把拼接好的url给到request
-        request = new Request.Builder().url(sb).build();
+        request = new Request.Builder().url(newUrl).build();
         //返回拼接好的request
         return chain.proceed(request);
     }

@@ -24,7 +24,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.kingsley.groupon.R;
 import com.kingsley.groupon.adapter.MyListViewAdapter;
 import com.kingsley.groupon.entity.TuanBean;
-import com.kingsley.groupon.util.HttpUtil;
+import com.kingsley.groupon.util.http.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,8 +285,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call<TuanBean> call, Response<TuanBean> response) {
 
                 TuanBean tuanBean = response.body();
+                //Log.i(TAG, "onResponse: tuanBean="+tuanBean);
                 if (tuanBean != null) {
                     List<TuanBean.Deal> deals = tuanBean.getDeals();
+                   // Log.i(TAG, "onResponse: deals="+deals);
                     adapter.addAll(deals,true);
                 }else {
                     Toast.makeText(MainActivity.this, "无数据", Toast.LENGTH_SHORT).show();

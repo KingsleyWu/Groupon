@@ -1,4 +1,4 @@
-package com.kingsley.groupon.util;
+package com.kingsley.groupon.util.http;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -13,12 +13,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kingsley.groupon.R;
 import com.kingsley.groupon.application.MyApplication;
+import com.kingsley.groupon.util.TimeUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ import java.util.Map;
  * version: 1.0
  */
 
-public class VolleyClient {
+class VolleyClient {
     private RequestQueue queue;
     private ImageLoader imageLoader;
     //单例
@@ -67,7 +67,7 @@ public class VolleyClient {
     void getDailyDeals(String city, final Response.Listener<String> listener, final Response.ErrorListener errorListener) {
         Map<String, String> params = new HashMap<>();
         params.put("city", city);
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+        String date = TimeUtil.getCurrentTime("yyyy-MM-dd");
         params.put("date", date);
         String url = HttpUtil.getURL("http://api.dianping.com/v1/deal/get_daily_new_id_list", params);
         final StringRequest request = new StringRequest(url, new Response.Listener<String>() {
@@ -111,8 +111,13 @@ public class VolleyClient {
         });
         queue.add(request);
     }
-
-    public void loadImage(String url, ImageView iv){
+    public void getCities(Response.Listener<String> listener, Response.ErrorListener errorListener){
+        Map<String, String> params = new HashMap<>();
+        String url = HttpUtil.getURL("http://api.dianping.com/v1/metadata/get_cities_with_businesses",params);
+        StringRequest request = new StringRequest(url,listener,errorListener);
+        queue.add(request);
+    }
+    void loadImage(String url, ImageView iv){
         ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(iv, R.drawable.ic_home_xianhua, R.drawable.ic_home_xianhua);
         imageLoader.get(url,imageListener);
     }

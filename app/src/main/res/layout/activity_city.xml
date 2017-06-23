@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/city_toolbar_back"/>
+            android:src="@drawable/city_toolbar_back"
+            tools:ignore="ContentDescription" />
         <RadioGroup
             android:id="@+id/city_rg"
             android:layout_gravity="center"
@@ -41,7 +42,8 @@
                 android:checked="true"
                 android:background="@drawable/city_rb_all_item_selector"
                 android:button="@null"
-                android:text="全部"/>
+                android:text="全部"
+                tools:ignore="HardcodedText" />
             <RadioButton
                 android:id="@+id/city_rb_overseas"
                 android:layout_width="wrap_content"
@@ -53,18 +55,64 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/city_rb_overseas_item_selector"
                 android:button="@null"
-                android:text="海外"/>
+                android:text="海外"
+                tools:ignore="HardcodedText" />
         </RadioGroup>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/city_tv_search"
+        android:background="#fff0f0f0">
+        <LinearLayout
+            android:id="@+id/city_ll_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="15dp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/round_corner_border">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/navibar_icon_search"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="输入商户名.地点"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/city_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignEnd="@+id/city_indexView"/>
+        <TextView
+            android:id="@+id/city_tv_word"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="A"
+            android:background="#33000000"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
+        <com.kingsley.groupon.view.IndexView
+            android:id="@+id/city_indexView"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="#44000000"/>
+    </RelativeLayout>
+
 
 
 </LinearLayout>

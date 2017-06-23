@@ -1,10 +1,14 @@
-package com.kingsley.groupon.util;
+package com.kingsley.groupon.util.http;
 
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.kingsley.groupon.R;
+import com.kingsley.groupon.application.MyApplication;
+import com.kingsley.groupon.entity.CityBean;
 import com.kingsley.groupon.entity.TuanBean;
 import com.kingsley.groupon.m_interface.RetrofitCallBack;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -116,7 +120,17 @@ public class HttpUtil {
     public static void getDailyDeals(String city, Callback<TuanBean> callBack){
         RetrofitClient.getInstance().getDailyDeals(city,callBack);
     }
-    public static void loadImage(String url, ImageView iv){
+    public static void loadImageByVolley(String url, ImageView iv){
         VolleyClient.getInstance().loadImage(url,iv);
+    }
+
+    public static void loadImage(String url,ImageView iv){
+        Picasso.with(MyApplication.myApplication).load(url).placeholder(R.drawable.ic_home_xianhua).into(iv);
+    }
+    public static void getCities( com.android.volley.Response.Listener<String> listener,com.android.volley.Response.ErrorListener errorListener){
+        VolleyClient.getInstance().getCities(listener,errorListener);
+    }
+    public static void getCities(Callback<CityBean> callBack){
+        RetrofitClient.getInstance().getCitys(callBack);
     }
 }

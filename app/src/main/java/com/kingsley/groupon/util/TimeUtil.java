@@ -10,8 +10,8 @@ import java.text.SimpleDateFormat;
  * version: 1.0
  */
 
-class TimeUtil {
-    static String getCurrentTime(String fromat){
+public class TimeUtil {
+    public static String getCurrentTime(String fromat){
         return new SimpleDateFormat(fromat).format(System.currentTimeMillis());
     }
 }

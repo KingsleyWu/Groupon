@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kingsley.groupon">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
@@ -19,7 +21,8 @@
         </activity>
         <activity android:name=".ui.GuideActivity" />
         <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.CityActivity"/>
+        <activity android:name=".ui.CityActivity" />
+        <activity android:name=".ui.CitySeachActivity"></activity>
     </application>
 
 </manifest>
