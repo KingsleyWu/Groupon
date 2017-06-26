@@ -1,6 +1,7 @@
 package com.kingsley.groupon.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,8 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.kingsley.groupon.R;
+
 /**
  * class name : Groupon
  * author : Kingsley
@@ -21,7 +24,7 @@ import android.view.View;
  */
 
 public class IndexView extends View {
-    private String[] words = {"热","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+    private String[] words = {"热门","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 
     //width&height
@@ -30,11 +33,20 @@ public class IndexView extends View {
     //paint
     private Paint paint;
     private int touchIndex = -1;
+    private final int defaultColor;
+    private final int touchColor;
 
     public IndexView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IndexView);
+        defaultColor = typedArray.getColor(R.styleable.IndexView_default_text_color, Color.WHITE);
+        touchColor = typedArray.getColor(R.styleable.IndexView_touch_text_color, Color.GRAY);
+        initPaint();
+    }
+
+    private void initPaint() {
         paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(defaultColor);
         paint.setAntiAlias(true);
         float size = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,12,getResources().getDisplayMetrics());
         paint.setTextSize(size);
@@ -53,6 +65,22 @@ public class IndexView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         itemWidth = getMeasuredWidth();
         itemHeight = getMeasuredHeight()/words.length;
+        //针对wrap_content的改写
+        int contentWidth = 0;
+        int lPadding = getPaddingStart();
+        int rPadding = getPaddingEnd();
+        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST){
+            for (String word : words) {
+                Rect rect = new Rect();
+                paint.getTextBounds(word, 0, word.length(), rect);
+                if (rect.width() > contentWidth) {
+                    contentWidth = rect.width();
+                }
+            }
+        }
+        int widthSize = lPadding + contentWidth + rPadding;
+        setMeasuredDimension(widthSize,MeasureSpec.getSize(heightMeasureSpec));
+
     }
 
     /**
@@ -79,14 +107,14 @@ public class IndexView extends View {
         super.onDraw(canvas);
         for (int i = 0; i < words.length; i++) {
             if (touchIndex == i){
-                paint.setColor(Color.BLACK);
+                paint.setColor(touchColor);
             }else {
-                paint.setColor(Color.WHITE);
+                paint.setColor(defaultColor);
             }
             String word = words[i];
             Rect rect = new Rect();
             //获取文字的宽高
-            paint.getTextBounds(word,0,1,rect);
+            paint.getTextBounds(word,0,word.length(),rect);
 
             int wordWidth = rect.width();
             int wordHeight = rect.height();

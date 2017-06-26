@@ -6,4 +6,8 @@
         <attr name="border_color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="IndexView">
+        <attr name="default_text_color" format="color"/>
+        <attr name="touch_text_color" format="color"/>
+    </declare-styleable>
 </resources>

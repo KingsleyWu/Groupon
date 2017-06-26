@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.kingsley.groupon.R;
 
-public class CitySeachActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city_seach);
+        setContentView(R.layout.activity_search);
     }
 }

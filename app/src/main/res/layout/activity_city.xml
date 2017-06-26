@@ -104,12 +104,15 @@
             android:background="#33000000"
             android:textSize="30sp"
             android:gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            tools:ignore="HardcodedText" />
         <com.kingsley.groupon.view.IndexView
             android:id="@+id/city_indexView"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
+            app:default_text_color="@color/colorOrange"
+            app:touch_text_color="@color/colorPrimaryDark"
             android:background="#44000000"/>
     </RelativeLayout>
 

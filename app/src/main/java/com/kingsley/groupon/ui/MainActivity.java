@@ -3,9 +3,11 @@ package com.kingsley.groupon.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.main_tv_address:
                 Intent intent = new Intent(this,CityActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,101);
                 break;
             case R.id.main_ll_search:
                 break;
@@ -282,11 +284,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });*/
         HttpUtil.getDailyDeals(mMainTvAddress.getText().toString(), new Callback<TuanBean>() {
             @Override
-            public void onResponse(Call<TuanBean> call, Response<TuanBean> response) {
-
+            public void onResponse(@NonNull Call<TuanBean> call, @NonNull Response<TuanBean> response) {
+                if (response != null){
                 TuanBean tuanBean = response.body();
                 //Log.i(TAG, "onResponse: tuanBean="+tuanBean);
-                if (tuanBean != null) {
+                    assert tuanBean != null;
                     List<TuanBean.Deal> deals = tuanBean.getDeals();
                    // Log.i(TAG, "onResponse: deals="+deals);
                     adapter.addAll(deals,true);
@@ -297,10 +299,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailure(Call<TuanBean> call, Throwable throwable) {
+            public void onFailure(@NonNull Call<TuanBean> call, @NonNull Throwable throwable) {
                 Toast.makeText(MainActivity.this, throwable.toString(), Toast.LENGTH_SHORT).show();
                 mMainPrListView.onRefreshComplete();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: "+data.getStringExtra("city"));
+        if (resultCode == RESULT_OK && requestCode == 101){
+            mMainTvAddress.setText(data.getStringExtra("city"));
+        }
     }
 }
